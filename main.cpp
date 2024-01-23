@@ -5,20 +5,20 @@
 #include <QApplication>
 #include <QWidget>
 
+struct MainWindow : QWidget {
+  KTextEditor::View *view;
+  KTextEditor::Editor *editor;
+  KTextEditor::Document *doc;
+  MainWindow() {
+    this->editor = KTextEditor::Editor::instance();
+    this->doc = editor->createDocument(this);
+    this->view = doc->createView(this);
+  };
+};
+
 int main(int argc, char *argv[]) {
   QApplication a(argc, argv);
-
-  QWidget main_window;
-
-  // get access to the global editor singleton
-  auto editor = KTextEditor::Editor::instance();
-
-  // create a new document
-  auto doc = editor->createDocument(&main_window);
-
-  // create a widget to display the document
-  auto view = doc->createView(&main_window);
-
+  MainWindow main_window;
   main_window.show();
   return a.exec();
 }
